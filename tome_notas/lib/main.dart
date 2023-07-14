@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tome_notas/telas/login.dart';
+import 'package:tome_notas/telas/notas.dart';
+import 'package:tome_notas/telas/cadastro.dart';
+import 'package:tome_notas/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,16 +26,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      title: 'home',
+      title: 'login',
       initialRoute: '/login',
       routes: {
         '/login': (context) => MyHome(),
-        '/menu': (context) => Menu(),
-        '/maps': (context) => Maps(),
-        '/cadastro': (context) => Cadastro(),
-        '/extra1': (context) => Extra1(),
-        '/contatos': (context) => Contatos(),
-        '/extra2': (context) => Extra2(),
+        //'/cadastro': (context) => Cadastro(),
+        '/notas': (context) => Notas(),
       },
       debugShowCheckedModeBanner: false,
     );

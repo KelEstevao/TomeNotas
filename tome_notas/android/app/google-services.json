@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "91440791445",
+    "project_id": "tomenotas",
+    "storage_bucket": "tomenotas.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91440791445:android:1cfbe732616a0d3226c09c",
+        "android_client_info": {
+          "package_name": "com.example.tome_notas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91440791445-eci5puaa21achaenid1bea5uu8d5aibg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmkWpnE_y5RNJPoF1YY875BKFMTok8bnk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91440791445-eci5puaa21achaenid1bea5uu8d5aibg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

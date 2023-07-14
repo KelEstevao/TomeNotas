@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tome_notas/telas/notas.dart';
 
 class MyHome extends StatefulWidget {
   const MyHome({Key? key}) : super(key: key);
@@ -22,10 +22,10 @@ class MyHomeState extends State<MyHome> {
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user == null) {
         print('User is currently signed out!');
-        Navigator.of(context).pushReplacementNamed('/');
+        Navigator.of(context).pushReplacementNamed('/notas');
       } else {
         print('User is signed in!');
-        Navigator.of(context).pushReplacementNamed('/menu');
+        Navigator.of(context).pushReplacementNamed('/notas');
       }
     });
   }
@@ -41,8 +41,8 @@ class MyHomeState extends State<MyHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
-        title: Text('App de Contatos'),
+        backgroundColor: const Color.fromARGB(255, 255, 114, 7),
+        title: Text('Tome Notas'),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(30.0, 0.0, 20.0, 0.0),

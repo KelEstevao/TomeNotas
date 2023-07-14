@@ -4,10 +4,10 @@ void main() {
   runApp(MaterialApp(
     title: 'Notas',
     theme: ThemeData(
-      primaryColor: Colors.amber,
-      scaffoldBackgroundColor: Colors.amber,
+      primaryColor: Color.fromARGB(255, 255, 94, 7),
+      scaffoldBackgroundColor: const Color.fromARGB(255, 255, 114, 7),
     ),
-    home: Extra1(),
+    home: Notas(),
   ));
 }
 
@@ -21,12 +21,12 @@ class Note {
   });
 }
 
-class Extra1 extends StatefulWidget {
+class Notas extends StatefulWidget {
   @override
-  _Extra1State createState() => _Extra1State();
+  _NotasState createState() => _NotasState();
 }
 
-class _Extra1State extends State<Extra1> {
+class _NotasState extends State<Notas> {
   List<Note> _notes = [];
   Note? _currentNote;
   TextEditingController _titleController = TextEditingController();
