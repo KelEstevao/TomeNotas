@@ -22,7 +22,7 @@ class MyHomeState extends State<MyHome> {
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user == null) {
         print('User is currently signed out!');
-        Navigator.of(context).pushReplacementNamed('/notas');
+        Navigator.of(context).pushReplacementNamed('/');
       } else {
         print('User is signed in!');
         Navigator.of(context).pushReplacementNamed('/notas');
@@ -49,7 +49,7 @@ class MyHomeState extends State<MyHome> {
         child: Column(
           children: [
             SizedBox(height: 100.0),
-            Image.asset('img/ifpi.png', width: 150.0),
+            Image.asset('img/login.png', width: 150.0),
             SizedBox(height: 70.0),
             TextField(
               controller: _emailController,

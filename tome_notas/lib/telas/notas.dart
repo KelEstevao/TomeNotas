@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -74,6 +77,12 @@ class _NotasState extends State<Notas> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Notas'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () => _logout(context),
+          ),
+        ],
         backgroundColor: Colors.amber,
       ),
       body: Column(
@@ -181,5 +190,14 @@ class _NotasState extends State<Notas> {
         ],
       ),
     );
+  }
+}
+
+Future<void> _logout(BuildContext context) async {
+  try {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacementNamed(context, '/login');
+  } catch (e) {
+    print('Erro ao fazer logout: $e');
   }
 }
