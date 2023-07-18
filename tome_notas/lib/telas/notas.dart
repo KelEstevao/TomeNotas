@@ -3,7 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     title: 'Notas',
     theme: ThemeData(
@@ -32,44 +34,98 @@ class Notas extends StatefulWidget {
 class _NotasState extends State<Notas> {
   List<Note> _notes = [];
   Note? _currentNote;
+  final _fireStore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _contentController = TextEditingController();
 
+  late String conteudo;
+  late String titulo;
+
+  late TextEditingController contentController;
+  late TextEditingController titleController;
+
   @override
-  void dispose() {
-    _titleController.dispose();
-    _contentController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _loadNotes();
   }
 
-  void _addNote() {
-    setState(() {
-      _notes.add(Note(
-        title: _titleController.text,
-        content: _contentController.text,
-      ));
-      _titleController.clear();
-      _contentController.clear();
-    });
+  void _loadNotes() async {
+    try {
+      final notesSnapshot =
+          await FirebaseFirestore.instance.collection('notas').get();
+      setState(() {
+        _notes = notesSnapshot.docs.map((doc) {
+          return Note(
+            title: doc.data()['titulo'],
+            content: doc.data()['conteudo'],
+          );
+        }).toList();
+      });
+    } catch (e) {
+      print('Erro ao carregar as notas: $e');
+    }
   }
 
-  void _editNote() {
-    setState(() {
-      _currentNote!.title = _titleController.text;
-      _currentNote!.content = _contentController.text;
-      _titleController.clear();
-      _contentController.clear();
-      _currentNote = null;
-    });
+  void _addNote() async {
+    try {
+      await FirebaseFirestore.instance.collection('notas').add({
+        'titulo': _titleController.text,
+        'conteudo': _contentController.text,
+      });
+
+      setState(() {
+        _notes.add(Note(
+          title: _titleController.text,
+          content: _contentController.text,
+        ));
+        _titleController.clear();
+        _contentController.clear();
+      });
+    } catch (e) {
+      print('Erro ao adicionar a nota: $e');
+    }
   }
 
-  void _deleteNote() {
-    setState(() {
-      _notes.remove(_currentNote);
-      _titleController.clear();
-      _contentController.clear();
-      _currentNote = null;
-    });
+  void _editNote() async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('notas')
+          .doc('5g3Gmq3j8znEYUvrV9oE')
+          .update({
+        'titulo': _titleController.text,
+        'conteudo': _contentController.text,
+      });
+
+      setState(() {
+        _currentNote!.title = _titleController.text;
+        _currentNote!.content = _contentController.text;
+        _titleController.clear();
+        _contentController.clear();
+        _currentNote = null;
+      });
+    } catch (e) {
+      print('Erro ao editar a nota: $e');
+    }
+  }
+
+  void _deleteNote() async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('notas')
+          .doc('$_titleController.text')
+          .delete();
+
+      setState(() {
+        _notes.remove(_currentNote);
+        _titleController.clear();
+        _contentController.clear();
+        _currentNote = null;
+      });
+    } catch (e) {
+      print('Erro ao excluir a nota: $e');
+    }
   }
 
   @override
@@ -83,10 +139,30 @@ class _NotasState extends State<Notas> {
             onPressed: () => _logout(context),
           ),
         ],
-        backgroundColor: Colors.amber,
+        backgroundColor: const Color.fromARGB(255, 255, 94, 7),
       ),
       body: Column(
         children: [
+          Padding(
+            padding: EdgeInsets.only(top: 16, left: 16, right: 16),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: "Procura o que?",
+                hintStyle: TextStyle(color: Colors.grey.shade600),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.grey.shade600,
+                  size: 20,
+                ),
+                filled: true,
+                fillColor: Colors.grey.shade100,
+                contentPadding: EdgeInsets.all(8),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(color: Colors.grey.shade100)),
+              ),
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: _notes.length,
@@ -106,7 +182,7 @@ class _NotasState extends State<Notas> {
             ),
           ),
           Container(
-            color: Colors.amber[100],
+            color: const Color.fromARGB(255, 255, 213, 179),
             padding: EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -128,7 +204,7 @@ class _NotasState extends State<Notas> {
                 ),
                 SizedBox(height: 8.0),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_currentNote == null) {
                       _addNote();
                     } else {
@@ -137,7 +213,7 @@ class _NotasState extends State<Notas> {
                   },
                   child: Text(_currentNote == null ? 'Adicionar' : 'Editar'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.amber,
+                    primary: const Color.fromARGB(255, 255, 147, 7),
                     onPrimary: Colors.black,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4.0),
@@ -201,3 +277,5 @@ Future<void> _logout(BuildContext context) async {
     print('Erro ao fazer logout: $e');
   }
 }
+//como configurar para salvar as notas no firebase no meu banco com o nome de notas, 
+//com campos "conteudo" e "titulo"

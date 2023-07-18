@@ -70,7 +70,8 @@ class MyHomeState extends State<MyHome> {
             SizedBox(height: 30.0),
             ElevatedButton(
               child: Text('Entrar'),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 255, 94, 7)),
               onPressed: () {
                 String email = _emailController.text.trim();
                 String senha = _senhaController.text.trim();
@@ -80,7 +81,8 @@ class MyHomeState extends State<MyHome> {
             SizedBox(height: 15.0),
             ElevatedButton(
               child: Text('Cadastre-se agora'),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 255, 94, 7)),
               onPressed: () {
                 Navigator.pushNamed(context, '/cadastro');
               },
